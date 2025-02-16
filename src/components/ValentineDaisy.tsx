@@ -32,57 +32,57 @@ useEffect(() => {
     }
   }, []);
 
-const handlePluckPetal = (index: number) => {
+  const handlePluckPetal = (index: number) => {
     if (pluckedPetals.includes(pluckedPetals.find(p => p.index === index) as PluckedPetal)) {
       return;
     }
-
+  
     if (!showSuitcase) {
       setShowSuitcase(true);
     }
-
-    setPluckedPetals(prev => [...prev, {
-      index,
-      offsetX: Math.random() * 40 - 20
-}]);
-
+  
 setPluckedPetals(prev => [...prev, {
     index,
     offsetX: Math.random() * 40 - 20
 }]);
-    
+
 if (pluckedPetals.length + 1 === messages.length) {
     setTimeout(() => {
+    if (typeof window !== 'undefined') {  // Check if we're on client side
         const startPosition = window.scrollY;
         const targetPosition = window.innerHeight;
         const duration = 4000;
         const startTime = Date.now();
 
         function ease(t: number) {
-            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
         }
 
         function animate() {
-          const currentTime = Date.now();
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
+        const currentTime = Date.now();
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
 
-          window.scroll(0, startPosition + (targetPosition - startPosition) * ease(progress));
+        window.scroll(0, startPosition + (targetPosition - startPosition) * ease(progress));
 
-          if (progress < 1) {
+        if (progress < 1) {
             requestAnimationFrame(animate);
-          }
+        }
         }
 
+        // Ensure body style changes are also client-side only
+        if (document.body) {
         document.body.style.overflow = 'auto';
         requestAnimationFrame(animate);
         
         setTimeout(() => {
-          document.body.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
         }, duration);
-      }, 8000);
+        }
     }
-  };
+    }, 8000);
+}
+};
 
   return (
     <div className="w-full min-h-screen relative bg-pink-50">
