@@ -24,11 +24,13 @@ const messages = [
 ];
 
 useEffect(() => {
-    document.body.style.overflow = 'hidden';
-    return () => {
+    if (typeof window !== 'undefined' && document.body) {
+      document.body.style.overflow = 'hidden';
+      return () => {
         document.body.style.overflow = 'auto';
-    };
-}, []);
+      };
+    }
+  }, []);
 
 const handlePluckPetal = (index: number) => {
     if (pluckedPetals.includes(pluckedPetals.find(p => p.index === index) as PluckedPetal)) {
